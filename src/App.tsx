@@ -7,13 +7,11 @@ function App() {
 
   return (
     <div className="container">
-      <div className="flex flex-row">
+      <div className="flex flex-row h-screen">
         <div className="basis-1/4">
           <p>File column</p>
         </div>
-        <div className="basis-3/4">
-          <p>Writing column</p>
-        </div>
+        <textarea className="basis-3/4" />
       </div>
     </div>
   );
