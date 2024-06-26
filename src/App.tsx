@@ -11,7 +11,9 @@ function App() {
         <div className="basis-1/4">
           <p>File column</p>
         </div>
-        <textarea className="basis-3/4" />
+        <div className="basis-3/4" contentEditable={true}>
+          <p>this is a editable textarea</p>
+        </div>
       </div>
     </div>
   );
