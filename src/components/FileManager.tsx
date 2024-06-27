@@ -8,7 +8,7 @@ const FileManager = () => {
 
     useEffect(() => {
         let generateFileTree = async () => {
-            setfileTree([await invoke("fetch_pwd")]);
+            setfileTree([await invoke("fetch_file_tree")]);
         };
         generateFileTree();
     }, []);

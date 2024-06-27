@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::{helpers::build_file_tree, structs::TreeNode};
 
 #[tauri::command]
-pub fn fetch_pwd() -> TreeNode {
+pub fn fetch_file_tree() -> TreeNode {
     let path = match std::env::current_dir() {
         Ok(path) => {
             println!("Current working directory -> {:?}", path);
