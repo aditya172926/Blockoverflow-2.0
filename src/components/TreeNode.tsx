@@ -7,17 +7,21 @@ type Props = {
 }
 
 const TreeNode = (props: Props) => {
-    const {key, label, children} = props.node;
+    const {name, path, children} = props.node;
     const [showChildren, setShowChildren] = useState<boolean>(false);
 
     const handleClick = () => {
-        setShowChildren(!showChildren);
+        if (children)
+            setShowChildren(!showChildren);
+        else {
+            console.log("opening and reading file");
+        }
     }
 
     return (
         <>
-            <div onClick={handleClick} className="px2" key={key}>
-                <span>{label}</span>
+            <div onClick={handleClick} className="px2" key={name}>
+                <span>{name}</span>
             </div>
             <ul className="px-2" style={{ borderLeft: "1px solid black" }}>
                 {showChildren && <Tree treeData={children} />}

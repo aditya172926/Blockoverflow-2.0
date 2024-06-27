@@ -1,5 +1,4 @@
 use std::path::Path;
-
 use crate::structs::TreeNode;
 
 pub fn build_file_tree<P: AsRef<Path>>(path: P) -> std::io::Result<TreeNode> {

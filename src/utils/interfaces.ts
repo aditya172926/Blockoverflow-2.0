@@ -1,5 +1,5 @@
 export interface TreeNodeInterface {
-    key: string;
-    label: string;
+    name: string;
+    path: string;
     children: TreeNodeInterface[]
 }

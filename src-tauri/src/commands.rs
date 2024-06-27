@@ -1,16 +1,23 @@
-use crate::helpers::build_file_tree;
+use std::path::PathBuf;
+
+use crate::{helpers::build_file_tree, structs::TreeNode};
 
 #[tauri::command]
-pub fn fetch_pwd() -> String {
+pub fn fetch_pwd() -> TreeNode {
     let path = match std::env::current_dir() {
         Ok(path) => {
             println!("Current working directory -> {:?}", path);
-            build_file_tree(String::from(path.to_str().unwrap()));
-            String::from(path.to_str().unwrap())
+            let node = build_file_tree(String::from(path.to_str().unwrap()));
+            // String::from(path.to_str().unwrap())
+            node.unwrap() 
         }
         Err(e) => {
             eprintln!("Error in fetching current working directory {:?}", e);
-            String::from("Error")
+            TreeNode {
+                name: String::from(""),
+                path: PathBuf::from(""),
+                children: None,
+            }
         }
     };
     path
