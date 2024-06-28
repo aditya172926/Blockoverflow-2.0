@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { TreeNodeInterface } from "../utils/interfaces";
 import Tree from "./Tree";
+import { readFileContents } from "../utils/helpers";
+import { useStore } from "../hooks/useStore";
 
 type Props = {
     node: TreeNodeInterface
@@ -9,12 +11,16 @@ type Props = {
 const TreeNode = (props: Props) => {
     const {name, path, children} = props.node;
     const [showChildren, setShowChildren] = useState<boolean>(false);
+    const store = useStore((state: any) => state);
 
-    const handleClick = () => {
+    const handleClick = async() => {
         if (children)
             setShowChildren(!showChildren);
         else {
-            console.log("opening and reading file");
+            console.log("opening and reading file ", path);
+            const contents = await readFileContents(path);
+            console.log(`${name} contents ${contents}`);
+            store.updateFileContent(contents);
         }
     }
 
