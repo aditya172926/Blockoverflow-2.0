@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{path::PathBuf, io::Result, fs};
 
 use crate::{helpers::build_file_tree, structs::TreeNode};
 
@@ -21,4 +21,11 @@ pub fn fetch_file_tree() -> TreeNode {
         }
     };
     path
+}
+
+#[tauri::command]
+pub fn read_file_contents(path: String) -> String {
+    println!("File path to read is {:?}", path);
+    let contents = fs::read_to_string(path).expect("Failed to read file");
+    contents
 }
