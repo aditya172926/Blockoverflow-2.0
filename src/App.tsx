@@ -1,8 +1,5 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
-import FileManager from "./components/fileManager";
 import ContentArea from "./components/ContentArea";
+import FileManager from "./components/FileManager";
 
 
 function App() {
