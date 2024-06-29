@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useStore } from "../hooks/useStore";
-import { invoke } from "@tauri-apps/api/tauri";
+import { saveFile } from "../utils/helpers";
 
 const ContentArea = () => {
     const store = useStore((state: any) => state);
@@ -11,7 +11,7 @@ const ContentArea = () => {
 
     const handleInput = async (event: any) => {
         if (event.ctrlKey && event.keyCode == 83) {
-            await invoke("save_file", { contents: event.target.innerHTML, path: store.openFiles?.path });
+            await saveFile(event.target.innerHTML, store.openFiles?.path);
         }
     }
 

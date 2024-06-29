@@ -1,4 +1,4 @@
-use std::{fs, io::Write, path::{Path, PathBuf}};
+use std::{fs, path::PathBuf};
 use tauri::api::dialog::blocking::FileDialogBuilder;
 
 use crate::{helpers::{build_file_tree, write_file}, structs::TreeNode};
