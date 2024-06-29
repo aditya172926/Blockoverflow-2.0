@@ -6,7 +6,7 @@ function App() {
 
   return (
     <div className="container">
-      <div className="flex flex-row h-screen">
+      <div className="flex flex-row min-h-screen max-h-screen">
         <FileManager />
         <ContentArea />
       </div>
