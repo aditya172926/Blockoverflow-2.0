@@ -1,4 +1,4 @@
-use std::path::Path;
+use std::{fs::File, io::Write, path::{Path, PathBuf}};
 use crate::structs::TreeNode;
 
 pub fn build_file_tree<P: AsRef<Path>>(path: P) -> std::io::Result<TreeNode> {
@@ -28,4 +28,15 @@ pub fn build_file_tree<P: AsRef<Path>>(path: P) -> std::io::Result<TreeNode> {
     }
     println!("{:?}", node);
     Ok(node)
+}
+
+pub fn write_file(contents: String, path: PathBuf) {
+    match File::create(path) {
+        Ok(mut file) => {
+            let _ = file.write_all(contents.as_bytes());
+        },
+        Err(e) => {
+            eprintln!("Error in saving file {:?}", e);
+        }
+    };
 }

@@ -1,31 +1,66 @@
-use std::{path::PathBuf, io::Result, fs};
+use std::{fs, path::PathBuf};
+use tauri::api::dialog::blocking::FileDialogBuilder;
 
-use crate::{helpers::build_file_tree, structs::TreeNode};
+use crate::{helpers::{build_file_tree, write_file}, structs::TreeNode};
 
 #[tauri::command]
-pub fn fetch_file_tree() -> TreeNode {
-    let path = match std::env::current_dir() {
-        Ok(path) => {
-            println!("Current working directory -> {:?}", path);
-            let node = build_file_tree(String::from(path.to_str().unwrap()));
-            // String::from(path.to_str().unwrap())
-            node.unwrap() 
+pub fn fetch_file_tree(path: Option<PathBuf>) -> TreeNode {
+    let file_tree = match path {
+        Some(path) => {
+            let node: TreeNode = match build_file_tree(String::from(path.to_str().unwrap())) {
+                Ok(t_node) => t_node,
+                Err(e) => {
+                    eprintln!("Failed to build tree view {:?}", e);
+                    TreeNode::default()
+                }
+            };
+            node
         }
-        Err(e) => {
-            eprintln!("Error in fetching current working directory {:?}", e);
-            TreeNode {
-                name: String::from(""),
-                path: PathBuf::from(""),
-                children: None,
-            }
+        None => {
+            eprintln!("Error in fetching current working directory");
+            TreeNode::default()
         }
     };
-    path
+    file_tree
 }
 
 #[tauri::command]
 pub fn read_file_contents(path: String) -> String {
-    println!("File path to read is {:?}", path);
-    let contents = fs::read_to_string(path).expect("Failed to read file");
+    let contents: String = match fs::read_to_string(path) {
+        Ok(text) => {
+            println!("{:?}", text);
+            text
+        },
+        Err(e) => {
+            eprintln!("Error while reading the file {:?}", e);
+            String::from("Unable to read the file")
+        }
+    };
     contents
+}
+
+#[tauri::command]
+pub fn open_file_directory() -> TreeNode {
+    let folder_path: Option<PathBuf> = FileDialogBuilder::new().pick_folder();
+    fetch_file_tree(folder_path)
+}
+
+#[tauri::command]
+pub fn save_file(contents: String, path: Option<String>) {
+    println!("path {:?}, content {:?}", path, contents);
+    match path {
+        Some(f_path) => {
+            write_file(contents, PathBuf::from(f_path));
+        },
+        None => {
+            let saved_file: Option<PathBuf> = FileDialogBuilder::new().add_filter("Text", &["txt"]).save_file();
+            println!("Saved file {:?}", saved_file);
+            match saved_file {
+                Some(path) => write_file(contents, path),
+                None => {
+                    eprintln!("No path provided");
+                }
+            };
+        }
+    }
 }
