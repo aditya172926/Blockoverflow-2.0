@@ -10,11 +10,8 @@ const ContentArea = () => {
     }, [store.fileContent]);
 
     const handleInput = async (event: any) => {
-        console.log(event);
         if (event.ctrlKey && event.keyCode == 83) {
-            store.updateFileContent(event.target.innerText);
-            console.log("file path ", store.openFiles?.path);
-            await invoke("save_file", { contents: event.target.innerText, path: store.openFiles?.path });
+            await invoke("save_file", { contents: event.target.innerHTML, path: store.openFiles?.path });
         }
     }
 
@@ -24,7 +21,8 @@ const ContentArea = () => {
             className="basis-3/4 p-3 bg-slate-100"
             contentEditable={true}
             onKeyUp={handleInput}
-        >{store.fileContent}</div>
+            dangerouslySetInnerHTML={{__html: store.fileContent}}
+        ></div>
     )
 }
 export default ContentArea;

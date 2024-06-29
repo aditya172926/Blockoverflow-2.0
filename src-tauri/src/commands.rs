@@ -1,4 +1,4 @@
-use std::{fs, path::{Path, PathBuf}};
+use std::{fs, io::Write, path::{Path, PathBuf}};
 use tauri::api::dialog::blocking::FileDialogBuilder;
 
 use crate::{helpers::{build_file_tree, write_file}, structs::TreeNode};
@@ -27,7 +27,10 @@ pub fn fetch_file_tree(path: Option<PathBuf>) -> TreeNode {
 #[tauri::command]
 pub fn read_file_contents(path: String) -> String {
     let contents: String = match fs::read_to_string(path) {
-        Ok(text) => text,
+        Ok(text) => {
+            println!("{:?}", text);
+            text
+        },
         Err(e) => {
             eprintln!("Error while reading the file {:?}", e);
             String::from("Unable to read the file")
@@ -46,15 +49,18 @@ pub fn open_file_directory() -> TreeNode {
 pub fn save_file(contents: String, path: Option<String>) {
     println!("path {:?}, content {:?}", path, contents);
     match path {
-        Some(f_path) => write_file(PathBuf::from(f_path), contents),
+        Some(f_path) => {
+            write_file(contents, PathBuf::from(f_path));
+        },
         None => {
-            let saved_file: Option<PathBuf> = FileDialogBuilder::new().set_file_name(".txt").save_file();
+            let saved_file: Option<PathBuf> = FileDialogBuilder::new().add_filter("Text", &["txt"]).save_file();
             println!("Saved file {:?}", saved_file);
-            let path = match saved_file {
-                Some(path) => path,
-                None => {PathBuf::default()}
+            match saved_file {
+                Some(path) => write_file(contents, path),
+                None => {
+                    eprintln!("No path provided");
+                }
             };
-            write_file(path, contents);
         }
     }
 }

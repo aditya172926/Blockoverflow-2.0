@@ -21,7 +21,7 @@ const TreeNode = (props: Props) => {
             const contents = await readFileContents(path);
             console.log(`${name} contents ${contents}`);
             store.updateFileContent(contents);
-            store.updateOpenFiles(props.node)
+            store.updateOpenFiles(props.node);
         }
     }
 
