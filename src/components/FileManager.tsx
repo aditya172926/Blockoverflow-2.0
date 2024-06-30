@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useStore } from "../hooks/useStore";
 import { open_file_directory, saveFile } from "../utils/helpers";
 import Tree from "./Tree";
+import { TreeNodeInterface } from "../utils/interfaces";
 
 const FileManager = () => {
-    const [fileTree, setfileTree] = useState<any>([]);
+    const [fileTree, setfileTree] = useState<TreeNodeInterface[]>([]);
     const fileContent = useStore((state: any) => state.fileContent);
 
     const openFolder = async () => {

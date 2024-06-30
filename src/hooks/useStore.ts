@@ -1,9 +1,16 @@
 import { create } from "zustand";
-import { TreeNodeInterface } from "../utils/interfaces";
+import { Nullable, TreeNodeInterface } from "../utils/interfaces";
 
 export const useStore = create((set) => ({
-    fileContent: "",
+    currentFile: null,
     updateFileContent: (newContent: string) => set({fileContent: newContent}),
     openFiles: {},
-    updateOpenFiles: (file: TreeNodeInterface) => set({openFiles: file})
+    updateOpenFiles: (file: TreeNodeInterface, openFiles: {[key: string]: TreeNodeInterface}, contents: Nullable<string>) => {
+        let files = openFiles;
+        files[file.path] = file;
+        files[file.path].fileContent = contents;
+        set({openFiles: files});
+        set({currentFile: files[file.path]});
+        console.log("in memory open files ", openFiles);
+    }
 }));
