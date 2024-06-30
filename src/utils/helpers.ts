@@ -6,7 +6,7 @@ export const readFileContents = async(path: string) => {
 }
 
 export const open_file_directory = async() => {
-    await invoke("open_file_directory")
+    return await invoke("open_file_directory");
 }
 
 export const saveFile = async(contents: string, path?: string) => {
