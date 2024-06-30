@@ -45,7 +45,7 @@ pub fn open_file_directory() -> TreeNode {
 }
 
 #[tauri::command]
-pub fn save_file(contents: String, path: Option<String>) {
+pub fn hard_save_file(contents: String, path: Option<String>) {
     match path {
         Some(f_path) => {
             write_file(contents, PathBuf::from(f_path));
