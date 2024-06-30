@@ -17,14 +17,16 @@ const TreeNode = (props: Props) => {
         if (children)
             setShowChildren(!showChildren);
         else {
-            let contents: Nullable<string> = null;
+            // TODO: disable temp saving previous file if no edits are made
+            if (store.currentFile) {
+                const previousContentFile = document.getElementById("contentArea");
+                store.openFiles[store.currentFile.path].fileContent = previousContentFile?.innerHTML;
+            }
             if (!store.openFiles[path]) {
-                console.log("calling backend");
-                contents = await readFileContents(path); // backend call
-                store.updateOpenFiles(props.node, store.openFiles, contents);
+                const contents: Nullable<string> = await readFileContents(path); // backend call
+                store.updateOpenFiles(props.node, contents);
             } else {
                 store.updateCurrentFile(store.openFiles[path]); // client side storage
-
             }
         }
     }

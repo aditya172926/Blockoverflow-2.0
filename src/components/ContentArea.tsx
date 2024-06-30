@@ -6,7 +6,8 @@ const ContentArea = () => {
 
     const handleInput = async (event: any) => {
         if (event.ctrlKey && event.keyCode == 83) { // save file
-            await saveFile(event.target.innerHTML, store.openFiles?.path);
+            store.saveFileContent(event.target.innerHTML, store.currentFile?.path); // client save
+            await saveFile(event.target.innerHTML, store.currentFile?.path); // backend save
         }
     }
 
