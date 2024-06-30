@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TreeNodeInterface } from "../utils/interfaces";
+import { Nullable, TreeNodeInterface } from "../utils/interfaces";
 import Tree from "./Tree";
 import { readFileContents } from "../utils/helpers";
 import { useStore } from "../hooks/useStore";
@@ -9,16 +9,23 @@ type Props = {
 }
 
 const TreeNode = (props: Props) => {
-    const {name, path, children} = props.node;
+    const { name, path, children } = props.node;
     const [showChildren, setShowChildren] = useState<boolean>(false);
     const store = useStore((state: any) => state);
 
-    const handleClick = async() => {
+    const handleClick = async () => {
         if (children)
             setShowChildren(!showChildren);
         else {
-            const contents = await readFileContents(path);
-            store.updateOpenFiles(props.node, store.openFiles, contents);
+            let contents: Nullable<string> = null;
+            if (!store.openFiles[path]) {
+                console.log("calling backend");
+                contents = await readFileContents(path); // backend call
+                store.updateOpenFiles(props.node, store.openFiles, contents);
+            } else {
+                store.updateCurrentFile(store.openFiles[path]); // client side storage
+
+            }
         }
     }
 

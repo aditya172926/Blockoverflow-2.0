@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { Nullable, TreeNodeInterface } from "../utils/interfaces";
 
 export const useStore = create((set) => ({
-    currentFile: null,
-    updateFileContent: (newContent: string) => set({fileContent: newContent}),
+    currentFile: {},
+    updateCurrentFile: (file: TreeNodeInterface) => set({currentFile: file}),
     openFiles: {},
     updateOpenFiles: (file: TreeNodeInterface, openFiles: {[key: string]: TreeNodeInterface}, contents: Nullable<string>) => {
         let files = openFiles;
