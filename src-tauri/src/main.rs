@@ -2,7 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-use commands::{fetch_file_tree, read_file_contents, open_file_directory, save_file};
+use commands::{fetch_file_tree, read_file_contents, open_file_directory, hard_save_file};
 mod commands;
 mod helpers;
 mod structs;
@@ -13,7 +13,7 @@ fn main() {
             fetch_file_tree,
             read_file_contents,
             open_file_directory,
-            save_file
+            hard_save_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

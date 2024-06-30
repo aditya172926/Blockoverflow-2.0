@@ -1,13 +1,13 @@
 import { useStore } from "../hooks/useStore";
-import { saveFile } from "../utils/helpers";
+import { hardSaveFile } from "../utils/helpers";
 
 const ContentArea = () => {
     const store = useStore((state: any) => state);
 
     const handleInput = async (event: any) => {
-        if (event.ctrlKey && event.keyCode == 83) { // save file
-            store.saveFileContent(event.target.innerHTML, store.currentFile?.path); // client save
-            await saveFile(event.target.innerHTML, store.currentFile?.path); // backend save
+        if (event.ctrlKey && event.keyCode == 83) { // save file (Ctrl + S)
+            store.saveFileContent(event.target.innerHTML, store.currentFile?.path); // client save (soft save)
+            await hardSaveFile(event.target.innerHTML, store.currentFile?.path); // backend save (hard save)
         }
     }
 

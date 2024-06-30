@@ -9,6 +9,6 @@ export const open_file_directory = async(): Promise<TreeNodeInterface> => {
     return await invoke("open_file_directory");
 }
 
-export const saveFile = async(contents: string, path?: string) => {
-    await invoke("save_file", {contents: contents, path: path});
+export const hardSaveFile = async(contents: string, path?: string) => {
+    await invoke("hard_save_file", {contents: contents, path: path});
 }
