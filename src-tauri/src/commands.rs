@@ -28,7 +28,6 @@ pub fn fetch_file_tree(path: Option<PathBuf>) -> TreeNode {
 pub fn read_file_contents(path: String) -> String {
     let contents: String = match fs::read_to_string(path) {
         Ok(text) => {
-            println!("{:?}", text);
             text
         },
         Err(e) => {
@@ -47,14 +46,12 @@ pub fn open_file_directory() -> TreeNode {
 
 #[tauri::command]
 pub fn save_file(contents: String, path: Option<String>) {
-    println!("path {:?}, content {:?}", path, contents);
     match path {
         Some(f_path) => {
             write_file(contents, PathBuf::from(f_path));
         },
         None => {
             let saved_file: Option<PathBuf> = FileDialogBuilder::new().add_filter("Text", &["txt"]).save_file();
-            println!("Saved file {:?}", saved_file);
             match saved_file {
                 Some(path) => write_file(contents, path),
                 None => {

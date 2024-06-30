@@ -17,9 +17,7 @@ const TreeNode = (props: Props) => {
         if (children)
             setShowChildren(!showChildren);
         else {
-            console.log("opening and reading file ", path);
             const contents = await readFileContents(path);
-            console.log(`${name} contents ${contents}`);
             store.updateFileContent(contents);
             store.updateOpenFiles(props.node);
         }

@@ -26,7 +26,6 @@ pub fn build_file_tree<P: AsRef<Path>>(path: P) -> std::io::Result<TreeNode> {
         }
         node.children = Some(children)
     }
-    println!("{:?}", node);
     Ok(node)
 }
 
